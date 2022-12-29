@@ -3142,6 +3142,7 @@ __metadata:
     react-dom: ^18.2.0
     typescript: ^4.9.3
     vite: ^4.0.0
+    vite-plugin-package-version: ^1.0.2
     vite-tsconfig-paths: ^4.0.3
   languageName: unknown
   linkType: soft
@@ -3528,6 +3529,15 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 474acf1146cb2701fe3b074892217553dfcf9a031280919ba1b8d651a068c9b15d863b7303cb15bd00a862b498e6cf4ad7b4a08fb134edd5a6f7641681cb54a2
+  languageName: node
+  linkType: hard
+
+"vite-plugin-package-version@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "vite-plugin-package-version@npm:1.0.2"
+  peerDependencies:
+    vite: ">=2.0.0-beta.69"
+  checksum: b651bea57ec0416d453854887cdc160e75e2643b1e72287dad6d1235cf08abdc79ffb59f6f0ab6eae1113e826f1287db54cfa57aa445b79d6346a9ceb09414c6
   languageName: node
   linkType: hard
 
