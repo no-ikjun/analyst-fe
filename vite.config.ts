@@ -1,5 +1,6 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import checker from "vite-plugin-checker";
 import loadVersion from "vite-plugin-package-version";
 import tsconfigPaths from "vite-tsconfig-paths";
 
@@ -20,5 +21,19 @@ export default defineConfig({
       },
     },
   },
-  plugins: [react(), tsconfigPaths(), loadVersion()],
+  plugins: [
+    react(),
+    tsconfigPaths(),
+    loadVersion(),
+    checker({
+      typescript: true,
+      eslint: {
+        lintCommand: "eslint src/",
+        dev: {
+          logLevel: ["warning"],
+        },
+      },
+      enableBuild: false,
+    }),
+  ],
 });
