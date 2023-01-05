@@ -1,11 +1,13 @@
 import "./App.css";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import ReactLogo from "./assets/react.svg";
 
 function App() {
   const [count, setCount] = useState(0);
+  const { t } = useTranslation("main");
 
   return (
     <div className="App">
@@ -14,7 +16,7 @@ function App() {
           <img src="/vite.svg" className="logo" alt="Vite logo" />
         </a>
         <a href="https://reactjs.org" target="_blank" rel="noreferrer">
-          <ReactLogo />
+          <img src="/src/assets/react.svg" className="logo" alt="Vite logo" />
         </a>
       </div>
       <h1>Vite + React</h1>
@@ -26,9 +28,7 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <p className="read-the-docs">{t("title")}</p>
     </div>
   );
 }
