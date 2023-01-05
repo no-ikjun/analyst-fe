@@ -64,7 +64,7 @@ Vite에서 제공하는 환경변수 이외에도 `.env` 파일을 통해 환경
 - `vite-tsconfig-paths`: vite 자체 alias 기능을 `tsconfig`와 연동해서 별도 설정이 필요없게 합니다.
 - `vite-plugin-package-version`: vite에서 환경 변수(`import.meta.env.PACKAGE_VERSION`)로 `package.json`의 버전 정보를 사용할 수 있게 합니다.
 - `vite-plugin-checker`: 타입스크립트 경고와 eslint 경고를 vite에서 띄워 줍니다.
-- `vite-plugin-svgr`: svg 파일을 react 컴포넌트 처럼 쓸 수 있게 해줍니다.
+- `vite-plugin-svgr`: svg 파일을 react 컴포넌트 처럼 쓸 수 있게 해줍니다. 혹시 svg 관련 타입 에러가 뜨면 `yarn` 후에 VS Code를 재시작 해주세요.
 
 ## 새 프로젝트 만들기
 
