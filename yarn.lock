@@ -3469,7 +3469,6 @@ __metadata:
     typescript: ^4.9.3
     vite: ^4.0.0
     vite-plugin-checker: ^0.5.3
-    vite-plugin-package-version: ^1.0.2
     vite-plugin-svgr: ^2.4.0
     vite-tsconfig-paths: ^4.0.3
   languageName: unknown
@@ -3925,15 +3924,6 @@ __metadata:
     vti:
       optional: true
   checksum: cf474d41ee7071da8a23da587b8aaf82dc3d9e66280837c6596f108d069242e0ca8da02e124fa61121508e56548e50ad0a68683a8ce4d7741ce347de1198c897
-  languageName: node
-  linkType: hard
-
-"vite-plugin-package-version@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "vite-plugin-package-version@npm:1.0.2"
-  peerDependencies:
-    vite: ">=2.0.0-beta.69"
-  checksum: b651bea57ec0416d453854887cdc160e75e2643b1e72287dad6d1235cf08abdc79ffb59f6f0ab6eae1113e826f1287db54cfa57aa445b79d6346a9ceb09414c6
   languageName: node
   linkType: hard
 
