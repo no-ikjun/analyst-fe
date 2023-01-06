@@ -16,6 +16,13 @@
 - `tsconfig.node.json`: `tsconfig.json`을 확장해서 `vite.config.ts` 를 검사하도록 설정이 포함되어 있습니다.
 - `tsconfig.eslint.json`: `tsconfig.json`을 확장한 eslint용 설정 파일입니다. `node_modules`를 제외하고 실제 컴파일은 하지 않도록 되어있습니다.
 
+### Styled-Component
+
+- CSS MDN: <https://developer.mozilla.org/ko/docs/Web/CSS>
+- Styled-Component: <https://styled-components.com/>
+
+저희는 스타일 시트 제작에 기본적인 CSS와 Styled-Component를 사용합니다.
+
 ### Yarn
 
 저희는 Yarn 3.XX 버전을 사용합니다. 타입스크립트 플러그인을 켜두었기 때문에, `yarn add` 명령어 입력시 별도의 `@types` 패키지를 입력할 필요가 없습니다.
@@ -64,6 +71,18 @@ Vite에서 제공하는 환경변수 이외에도 `.env` 파일을 통해 환경
 - `vite-tsconfig-paths`: vite 자체 alias 기능을 `tsconfig`와 연동해서 별도 설정이 필요없게 합니다.
 - `vite-plugin-checker`: 타입스크립트 경고와 eslint 경고를 vite에서 띄워 줍니다.
 - `vite-plugin-svgr`: svg 파일을 react 컴포넌트 처럼 쓸 수 있게 해줍니다. 혹시 svg 관련 타입 에러가 뜨면 `yarn` 후에 VS Code를 재시작 해주세요.
+
+### i18n
+
+- `react-i18next` : <https://react.i18next.com/>
+
+외국인 이용객이 생길 수도 있으므로, [i18n](https://ko.wikipedia.org/wiki/%EA%B5%AD%EC%A0%9C%ED%99%94%EC%99%80_%EC%A7%80%EC%97%AD%ED%99%94)을 지원하는 형태로 제작하였습니다.
+
+- 왜 `*.json`이 아니라 `*.ts`로 만들었나요?: 주석을 사용할 수 있습니다. 그리고 양이 많지 않으면 `index.ts`에서 바로 작성가능하기도 하고
+
+`src/locales`에 각 언어별 폴더를 만들고, 같은 object 형식으로 작성하면 됩니다. 새로 추가된 파일이 있거나 새로 추가해야 되는 언어가 있으면 복사해서 다른 언어 폴더로 붙여넣읍시다.
+
+이후 공식 문서를 참고해서 사용하면 됩니다. `App.tsx`에 예시가 있습니다.
 
 ## 새 프로젝트 만들기
 
