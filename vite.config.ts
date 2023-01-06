@@ -34,8 +34,6 @@ export default defineConfig({
       },
       enableBuild: false,
     }),
-    svgr({
-      exportAsDefault: true,
-    }),
+    svgr(),
   ],
 });

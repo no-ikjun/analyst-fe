@@ -2,8 +2,13 @@ import "./App.css";
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
 
-import ReactLogo from "./assets/react.svg";
+import { ReactComponent as ReactLogo } from "./assets/react.svg";
+
+const ReadTheDocs = styled.p`
+  color: #888;
+`;
 
 function App() {
   const [count, setCount] = useState(0);
@@ -28,7 +33,10 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">{t("title")}</p>
+      <ReadTheDocs>
+        {t("title")}
+        <ReactLogo width={16} height={16} />
+      </ReadTheDocs>
     </div>
   );
 }
