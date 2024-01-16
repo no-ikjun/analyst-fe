@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-import ReactLogo from "./assets/react.svg?react";
+import { ReactComponent as ReactLogo } from "./assets/react.svg";
 
 const ReadTheDocs = styled.p`
   color: #888;
