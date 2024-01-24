@@ -2,12 +2,14 @@ import "./App.css";
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
+import styled, { CSSProperties } from "styled-components";
 
-import { ReactComponent as ReactLogo } from "./assets/react.svg";
+import ReactLogo from "./assets/react.svg?react";
 
-const ReadTheDocs = styled.p`
-  color: #888;
+const ReadTheDocs = styled.p<{
+  $color?: CSSProperties["color"];
+}>`
+  color: ${({ $color }) => $color ?? "red"};
 `;
 
 function App() {
@@ -33,7 +35,7 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <ReadTheDocs>
+      <ReadTheDocs $color={"blue"}>
         {t("title")}
         <ReactLogo width={16} height={16} />
       </ReadTheDocs>
