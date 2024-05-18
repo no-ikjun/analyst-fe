@@ -125,3 +125,4 @@ degit https://github.com/gsainfoteam/Infoteam-frontend-template.git <프로젝�
   ```shell
   yarn run preview
   ```
+# analyst-fe
