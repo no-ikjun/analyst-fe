@@ -68,3 +68,8 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+form {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
