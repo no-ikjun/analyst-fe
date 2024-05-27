@@ -5,10 +5,13 @@ import axios from "axios";
 const StockInfo = ({ stockInfo }: any) => {
   const handleAddToWatchlist = async () => {
     try {
-      const response = await axios.post("http://localhost:5050/api/watchlist", {
-        stockCode: stockInfo.code,
-        stockName: stockInfo.name,
-      });
+      const response = await axios.post(
+        `${process.env.BASE_URL}/api/watchlist`,
+        {
+          stockCode: stockInfo.code,
+          stockName: stockInfo.name,
+        },
+      );
       console.log("관심 종목에 추가 성공:", response.data);
     } catch (error) {
       console.error("관심 종목에 추가 실패:", error);

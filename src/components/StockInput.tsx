@@ -24,7 +24,7 @@ const StockInput: React.FC = () => {
     }
     try {
       const response = await axios.get(
-        `http://localhost:5050/kis/stock-info?code=${stockCode}`,
+        `${process.env.BASE_URL}/kis/stock-info?code=${stockCode}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },

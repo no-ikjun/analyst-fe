@@ -19,7 +19,7 @@ const HomePage = () => {
       }
       try {
         const response = await axios.get(
-          "http://localhost:5050/auth/validation",
+          `${process.env.BASE_URL}/auth/validation`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },

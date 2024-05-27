@@ -16,7 +16,7 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5050/auth/login", {
+      const response = await axios.post(`${process.env.BASE_URL}/auth/login`, {
         email,
         password,
       });
