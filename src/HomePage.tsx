@@ -48,6 +48,11 @@ const HomePage = () => {
         <>
           <p>환영합니다! 서비스를 이용하세요.</p>
           <StockInput />
+          <p className="link-button-p">
+            <a className="link-button" href="/stock">
+              관심 종목 보기
+            </a>
+          </p>
         </>
       ) : (
         <>
