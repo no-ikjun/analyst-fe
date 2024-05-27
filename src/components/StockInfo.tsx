@@ -6,7 +6,7 @@ const StockInfo = ({ stockInfo }: any) => {
   const handleAddToWatchlist = async () => {
     try {
       const response = await axios.post(
-        `${process.env.BASE_URL}/api/watchlist`,
+        `${import.meta.env.VITE_BASE_URL}/api/watchlist`,
         {
           stockCode: stockInfo.code,
           stockName: stockInfo.name,

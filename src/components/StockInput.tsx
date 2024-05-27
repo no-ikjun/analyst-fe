@@ -24,7 +24,7 @@ const StockInput: React.FC = () => {
     }
     try {
       const response = await axios.get(
-        `${process.env.BASE_URL}/kis/stock-info?code=${stockCode}`,
+        `${import.meta.env.VITE_BASE_URL}/kis/stock-info?code=${stockCode}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },

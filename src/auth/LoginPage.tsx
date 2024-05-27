@@ -16,11 +16,13 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(`${process.env.BASE_URL}/auth/login`, {
-        email,
-        password,
-      });
-      console.log("로그인 성공:", response.data);
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/auth/login`,
+        {
+          email,
+          password,
+        },
+      );
       localStorage.setItem("accessToken", response.data.accessToken);
       setLoading(false);
       navigate("/");
