@@ -19,7 +19,7 @@ const HomePage = () => {
       }
       try {
         const response = await axios.get(
-          "http://localhost:5050/auth/validation",
+          `${import.meta.env.VITE_BASE_URL}/auth/validation`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
