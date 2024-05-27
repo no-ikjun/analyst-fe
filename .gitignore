@@ -32,3 +32,6 @@ build
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+.env.development
+.env.production

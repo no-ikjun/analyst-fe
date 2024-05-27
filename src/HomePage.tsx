@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 import LoadingOverlay from "./components/LoadingOverlay";
+import StockInput from "./components/StockInput";
 
 const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -44,7 +45,10 @@ const HomePage = () => {
       <LoadingOverlay loading={loading} />
       <h2>AI Analyst</h2>
       {isLoggedIn ? (
-        <p>환영합니다! 서비스를 이용하세요.</p>
+        <>
+          <p>환영합니다! 서비스를 이용하세요.</p>
+          <StockInput />
+        </>
       ) : (
         <>
           <p>로그인이 필요한 서비스입니다.</p>
