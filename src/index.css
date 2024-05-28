@@ -4,9 +4,9 @@
   line-height: 24px;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* color-scheme: light dark; */
+  color: #213547; /* 라이트 모드 텍스트 색상으로 고정 */
+  background-color: #ffffff; /* 라이트 모드 배경색으로 고정 */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -17,11 +17,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #646cff; /* 라이트 모드 링크 색상으로 고정 */
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #535bf2; /* 라이트 모드 링크 호버 색상으로 고정 */
 }
 
 body {
@@ -30,11 +30,14 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #ffffff; /* 라이트 모드 배경색으로 고정 */
+  color: #213547; /* 라이트 모드 텍스트 색상으로 고정 */
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  color: #213547; /* 라이트 모드 텍스트 색상으로 고정 */
 }
 
 button {
@@ -44,32 +47,34 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #f9f9f9; /* 라이트 모드 배경색으로 고정 */
+  color: #213547; /* 라이트 모드 텍스트 색상으로 고정 */
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #646cff; /* 라이트 모드 테두리 색상으로 고정 */
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-
 form {
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+/* 다크 모드 설정을 제거하여 라이트 모드로 고정 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #213547; /* 라이트 모드 텍스트 색상으로 고정 */
+    background-color: #ffffff; /* 라이트 모드 배경색으로 고정 */
+  }
+  a:hover {
+    color: #747bff; /* 라이트 모드 링크 호버 색상으로 고정 */
+  }
+  button {
+    background-color: #f9f9f9; /* 라이트 모드 배경색으로 고정 */
+  }
 }

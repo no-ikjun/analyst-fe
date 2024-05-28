@@ -43,6 +43,30 @@ const MyStockPage = () => {
     fetchWatchlist();
   }, []);
 
+  const handleRemove = async (code: string) => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      setError("로그인이 필요합니다.");
+      return;
+    }
+
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_BASE_URL}/kis/remove-interest?code=${code}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      // 관심 종목에서 제거된 종목을 로컬 상태에서도 제거
+      setWatchlist((prevWatchlist) =>
+        prevWatchlist.filter((stock) => stock.code !== code),
+      );
+    } catch (err) {
+      console.error("관심 종목에서 제거 실패:", err);
+      setError("관심 종목에서 제거하는 데 실패했습니다.");
+    }
+  };
+
   return (
     <div className="watchlist-container">
       <LoadingOverlay loading={loading} />
@@ -57,6 +81,12 @@ const MyStockPage = () => {
               <p>종목 코드: {stock.code}</p>
               <p>정식 코드: {stock.std_pdno}</p>
               <p>종목 이름: {stock.prdt_abrv_name}</p>
+              <div className="button-group">
+                <button onClick={() => {}}>자세히보기</button>
+                <button onClick={() => handleRemove(stock.code)}>
+                  제거하기
+                </button>
+              </div>
             </li>
           ))}
         </ul>
