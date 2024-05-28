@@ -37,6 +37,7 @@ const StockInput: React.FC = () => {
         response.data.output.std_pdno === ""
       ) {
         setError("해당 주식 정보가 존재하지 않습니다.");
+        setLoading(false);
         return;
       }
       setStockInfo(response.data.output);
