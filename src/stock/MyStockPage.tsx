@@ -71,7 +71,7 @@ const MyStockPage = () => {
     <div className="watchlist-container">
       <LoadingOverlay loading={loading} />
       <a href="/">&larr;이전으로</a>
-      <h2>관심 종목</h2>
+      <h2>관심 종목 ({watchlist.length})</h2>
       {error ? (
         <p className="error">{error}</p>
       ) : (
