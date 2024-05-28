@@ -52,7 +52,7 @@ const MyStockPage = () => {
 
     try {
       await axios.delete(
-        `${import.meta.env.VITE_BASE_URL}/kis/remove-interest?code=${code}`,
+        `${import.meta.env.VITE_BASE_URL}/kis/delete-interest?code=${code}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
