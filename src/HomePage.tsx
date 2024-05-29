@@ -46,7 +46,11 @@ const HomePage = () => {
       <h2>AI Analyst</h2>
       {isLoggedIn ? (
         <>
-          <p>환영합니다! 서비스를 이용하세요.</p>
+          <p>
+            <a className="link-button" href="/pref">
+              투자 성향 등록하기 &rarr;
+            </a>
+          </p>
           <StockInput />
           <p className="link-button-p">
             <a className="link-button" href="/stock">

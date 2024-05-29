@@ -34,6 +34,13 @@ const StockInfo = ({ stockInfo, code }: any) => {
       <LoadingOverlay loading={loading} />
       <h3>주식 정보</h3>
       <p>{stockInfo.std_pdno}</p>
+      <p>{Number(stockInfo.bfdy_clpr).toLocaleString()} (전일종가)</p>
+      <p>
+        {(
+          Number(stockInfo.bfdy_clpr) * Number(stockInfo.lstg_stqt)
+        ).toLocaleString()}
+        원 (시총)
+      </p>
       <p>{stockInfo.prdt_abrv_name}</p>
       {error && <p className="error">{error}</p>}
       <button onClick={handleAddToWatchlist}>관심 종목에 추가</button>
