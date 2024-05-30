@@ -1,0 +1,69 @@
+.preferences-container {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.preferences-container h2 {
+  margin-bottom: 20px;
+  color: #213547;
+}
+
+.preferences-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.preferences-container li {
+  margin-bottom: 10px;
+}
+
+.preferences-container .save-button {
+  margin-top: 20px;
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+}
+
+.preferences-container .save-button:hover {
+  background-color: #218838;
+}
+
+.preferences-container .save-button:focus {
+  outline: none;
+}
+
+.preferences-container button {
+  width: 250px;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #000;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.preferences-container button:hover {
+  background-color: #e6e6e6;
+}
+
+.preferences-container button:focus {
+  outline: 1px solid #007bff;
+}
+
+.preferences-container button.selected {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.selected-preference {
+  margin-top: 20px;
+  font-size: 1.2em;
+  color: #007bff;
+}
