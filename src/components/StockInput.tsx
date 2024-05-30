@@ -85,7 +85,7 @@ const StockInput = () => {
           <label htmlFor="international">
             해외 주식 검색 (
             <a
-              href="https://money2.daishin.com/html/Notice/2020/downloads/n_22.pdf"
+              href="https://kr.investing.com/stock-screener/?sp=country::5|sector::a|industry::a|equityType::a|exchange::2%3Ceq_market_cap;1"
               target="_blank"
               rel="noreferrer"
             >
