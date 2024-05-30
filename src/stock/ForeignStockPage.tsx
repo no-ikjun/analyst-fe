@@ -4,14 +4,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import LoadingOverlay from "src/components/LoadingOverlay";
 
-interface Stock {
+interface ForeignStock {
   code: string;
-  std_pdno: string;
-  prdt_abrv_name: string;
+  prdt_name: string;
+  prdt_eng_name: string;
 }
 
-const MyStockPage = () => {
-  const [watchlist, setWatchlist] = useState<Stock[]>([]);
+const ForeignStockPage = () => {
+  const [watchlist, setWatchlist] = useState<ForeignStock[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +26,7 @@ const MyStockPage = () => {
 
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/kis/interest-list`,
+          `${import.meta.env.VITE_BASE_URL}/kis/foreign/interest-list`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -52,7 +52,7 @@ const MyStockPage = () => {
 
     try {
       await axios.delete(
-        `${import.meta.env.VITE_BASE_URL}/kis/delete-interest?code=${code}`,
+        `${import.meta.env.VITE_BASE_URL}/kis/foreign/delete-interest?code=${code}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -71,11 +71,10 @@ const MyStockPage = () => {
     <div className="watchlist-container">
       <LoadingOverlay loading={loading} />
       <div className="top-div">
-        <a href="/">&larr;이전으로</a>
-        <a href="/stock/foreign">해외주식</a>
+        <a href="/stock">&larr;이전으로</a>
       </div>
 
-      <h2>[국내주식] 관심 종목 ({watchlist.length})</h2>
+      <h2>[해외주식] 관심 종목 ({watchlist.length})</h2>
       {error ? (
         <p className="error">{error}</p>
       ) : (
@@ -83,8 +82,8 @@ const MyStockPage = () => {
           {watchlist.map((stock) => (
             <li key={stock.code}>
               <p>종목 코드: {stock.code}</p>
-              <p>정식 코드: {stock.std_pdno}</p>
-              <p>종목 이름: {stock.prdt_abrv_name}</p>
+              <p>영문 코드: {stock.prdt_eng_name}</p>
+              <p>한글 이름: {stock.prdt_name}</p>
               <div className="button-group">
                 <button onClick={() => {}}>자세히보기</button>
                 <button onClick={() => handleRemove(stock.code)}>
@@ -99,4 +98,4 @@ const MyStockPage = () => {
   );
 };
 
-export default MyStockPage;
+export default ForeignStockPage;

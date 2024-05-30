@@ -2,7 +2,7 @@
   margin-top: 20px;
   padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 7px;
+  border-radius: 5px;
   background-color: #f9f9f9;
 }
 
@@ -13,13 +13,30 @@
 
 .stock-input-container label {
   margin-bottom: 5px;
+  color: #000;
 }
 
-.stock-input-container input {
+.stock-input-container input[type="text"] {
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 13px;
+  gap: 15px;
+  justify-content: center;
+}
+
+.checkbox-container label {
+  margin-bottom: 0;
+}
+
+.checkbox-container input[type="checkbox"] {
+  width: 20px;
 }
 
 .stock-input-container button {
