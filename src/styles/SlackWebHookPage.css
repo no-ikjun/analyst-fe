@@ -1,0 +1,64 @@
+.webhook-container {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.webhook-container h2 {
+  margin-bottom: 20px;
+  color: #213547;
+}
+
+.webhook-container input {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 80%;
+}
+
+.webhook-container button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.webhook-container .invert {
+  background-color: #fff;
+  color: #007bff;
+  border: 1px solid #007bff;
+}
+
+.webhook-container .invert:hover {
+  background-color: #f9f9f9;
+}
+
+.webhook-container button:hover {
+  background-color: #0056b3;
+}
+
+.saved-webhook {
+  margin-top: 20px;
+  font-size: 1.2em;
+  color: #007bff;
+}
+
+.button-div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  vertical-align: middle;
+}
+
+.button-div > a {
+  width: 48%;
+}

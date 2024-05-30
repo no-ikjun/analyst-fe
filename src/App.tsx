@@ -7,6 +7,7 @@ import SignupPage from "./auth/SignupPage";
 import HomePage from "./HomePage";
 import MyStockPage from "./stock/MyStockPage";
 import InvestmentPreferences from "./stock/PrefPage";
+import SlackWebhookPage from "./stock/SlackWebHookPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/stock" element={<MyStockPage />} />
         <Route path="/pref" element={<InvestmentPreferences />} />
+        <Route path="/slack" element={<SlackWebhookPage />} />
         <Route path="/" element={<HomePage />} />
       </Routes>
     </div>

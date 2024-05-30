@@ -52,11 +52,14 @@ const HomePage = () => {
             </a>
           </p>
           <StockInput />
-          <p className="link-button-p">
+          <div className="link-button-p">
+            <a className="link-button" href="/slack">
+              Webhook 설정
+            </a>
             <a className="link-button" href="/stock">
               관심 종목 보기
             </a>
-          </p>
+          </div>
         </>
       ) : (
         <>
