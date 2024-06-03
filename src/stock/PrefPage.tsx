@@ -102,6 +102,9 @@ const InvestmentPreferences: React.FC = () => {
   return (
     <div className="preferences-container">
       <LoadingOverlay loading={loading} />
+      <div className="top-div">
+        <a href="/stock">&larr;이전으로</a>
+      </div>
       <h2>투자 성향 선택</h2>
       <ul>
         <li>
