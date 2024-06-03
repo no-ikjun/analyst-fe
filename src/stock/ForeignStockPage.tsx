@@ -81,7 +81,7 @@ const ForeignStockPage = () => {
         <ul>
           {watchlist.map((stock) => (
             <li key={stock.code}>
-              <p>종목 코드: {stock.code}</p>
+              <p>종목 티커: {stock.code}</p>
               <p>영문 이름: {stock.prdt_eng_name}</p>
               <p>한글 이름: {stock.prdt_name}</p>
               <div className="button-group">

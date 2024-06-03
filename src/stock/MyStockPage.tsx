@@ -82,8 +82,8 @@ const MyStockPage = () => {
         <ul>
           {watchlist.map((stock) => (
             <li key={stock.code}>
-              <p>종목 코드: {stock.code}</p>
-              <p>정식 코드: {stock.std_pdno}</p>
+              <p>종목 티커: {stock.code}</p>
+              <p>정식 티커: {stock.std_pdno}</p>
               <p>종목 이름: {stock.prdt_abrv_name}</p>
               <div className="button-group">
                 <button onClick={() => {}}>자세히보기</button>

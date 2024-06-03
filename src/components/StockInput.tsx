@@ -70,10 +70,10 @@ const StockInput = () => {
         target="_blank"
         rel="noreferrer"
       >
-        종목 코드 확인하기
+        종목 티커 확인하기
       </a>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="stockCode">관심 주식 종목 코드:</label>
+        <label htmlFor="stockCode">관심 주식 종목 티커:</label>
         <input
           type="text"
           id="stockCode"
