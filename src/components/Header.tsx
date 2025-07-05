@@ -9,17 +9,17 @@ export default function Header() {
   return (
     <Container>
       <Logo onClick={() => navigate("/")}>Wisemind</Logo>
+
+      <SearchWrapper>
+        <SearchInput placeholder="궁금한 정보를 검색하세요" />
+      </SearchWrapper>
+
       <Menu>
         <MenuItem onClick={() => navigate("/analyst")}>Analyst</MenuItem>
         <MenuItem onClick={() => navigate("/chatting")}>Chatting</MenuItem>
+
         {isLoggedIn ? (
-          <ProfileButton
-            onClick={() => {
-              localStorage.removeItem("accessToken");
-              useAuthStore.getState().setLoggedIn(false);
-              // navigate("/profile");
-            }}
-          >
+          <ProfileButton onClick={() => navigate("/profile")}>
             내 프로필
           </ProfileButton>
         ) : (
@@ -48,6 +48,28 @@ const Logo = styled.h1`
   font-weight: bold;
   color: #3385ff;
   cursor: pointer;
+`;
+
+const SearchWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 24px;
+`;
+
+const SearchInput = styled.input`
+  width: 400px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: rgba(255, 255, 255, 0.6);
+  outline: none;
+  transition: 0.3s;
+
+  &:focus {
+    border-color: #3385ff;
+    box-shadow: 0 0 5px rgba(51, 133, 255, 0.5);
+  }
 `;
 
 const Menu = styled.div`
