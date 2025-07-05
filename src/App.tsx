@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 
 import LoginPage from "./auth/LoginPage";
 import SignupPage from "./auth/SignupPage";
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import GlobalPersonalAssistant from "./components/PersonalAssistance";
 // import HomePage from "./HomePage";
@@ -29,6 +30,7 @@ function App() {
         <Route path="/slack" element={<SlackWebhookPage />} />
         <Route path="/" element={<Home />} />
       </Routes>
+      <Footer />
     </div>
   );
 }
