@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import LoginPage from "./auth/LoginPage";
 import SignupPage from "./auth/SignupPage";
 import HomePage from "./HomePage";
+import UserProfileForm from "./profile/UserProfileForm";
 import ForeignStockPage from "./stock/ForeignStockPage";
 import MyStockPage from "./stock/MyStockPage";
 import InvestmentPreferences from "./stock/PrefPage";
@@ -14,6 +15,7 @@ function App() {
   return (
     <div className="app">
       <Routes>
+        <Route path="/profile" element={<UserProfileForm />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/stock" element={<MyStockPage />} />

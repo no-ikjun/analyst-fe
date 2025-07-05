@@ -1,5 +1,6 @@
 import "../styles/SignupPage.css";
 
+import axios from "axios";
 import React, { useState } from "react";
 
 const SignupPage = () => {
@@ -7,14 +8,34 @@ const SignupPage = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
-    // 회원가입 로직 추가
-    console.log("회원가입 시도:", email, password);
+    try {
+      console.log("회원가입 요청:", {
+        email,
+        password,
+      });
+      console.log("API URL:", `${import.meta.env.VITE_BASE_URL}/user/signup`);
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/user/signup`,
+        {
+          email,
+          password,
+        },
+      );
+      if (response.status === 201) {
+        alert("회원가입이 완료되었습니다.");
+        // Redirect to login page or home page
+        window.location.href = "/login";
+      }
+    } catch (error) {
+      console.error("회원가입 실패:", error);
+      alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
