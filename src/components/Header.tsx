@@ -1,34 +1,30 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "src/stores/authStore";
 import styled from "styled-components";
 
 export default function Header() {
-  const [search, setSearch] = useState("");
+  const { isLoggedIn } = useAuthStore();
+  const navigate = useNavigate();
 
   return (
     <Container>
-      <Logo>Wisemind</Logo>
-
-      <SearchWrapper>
-        <SearchInput
-          placeholder="주제, 장소, 매체 검색"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </SearchWrapper>
-
+      <Logo onClick={() => navigate("/")}>Wisemind</Logo>
       <Menu>
-        <MenuItem>홈</MenuItem>
-        <MenuItem>추천</MenuItem>
-        <MenuItem>팔로우 중</MenuItem>
-        <Divider />
-        <MenuItem>대한민국</MenuItem>
-        <MenuItem>세계</MenuItem>
-        <MenuItem>지역</MenuItem>
-        <MenuItem>비즈니스</MenuItem>
-        <MenuItem>과학/기술</MenuItem>
-        <MenuItem>엔터테인먼트</MenuItem>
-        <MenuItem>스포츠</MenuItem>
-        <MenuItem>건강</MenuItem>
+        <MenuItem onClick={() => navigate("/analyst")}>Analyst</MenuItem>
+        <MenuItem onClick={() => navigate("/chatting")}>Chatting</MenuItem>
+        {isLoggedIn ? (
+          <ProfileButton
+            onClick={() => {
+              localStorage.removeItem("accessToken");
+              useAuthStore.getState().setLoggedIn(false);
+              // navigate("/profile");
+            }}
+          >
+            내 프로필
+          </ProfileButton>
+        ) : (
+          <LoginButton onClick={() => navigate("/login")}>로그인</LoginButton>
+        )}
       </Menu>
     </Container>
   );
@@ -37,51 +33,30 @@ export default function Header() {
 const Container = styled.header`
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 999;
   backdrop-filter: blur(20px);
   background: rgba(255, 255, 255, 0.7);
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 12px 24px;
+  padding: 6px 24px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 `;
 
-const Logo = styled.div`
+const Logo = styled.h1`
   font-size: 1.5rem;
   font-weight: bold;
   color: #3385ff;
-  margin-right: 40px;
+  cursor: pointer;
 `;
 
-const SearchWrapper = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-`;
-
-const SearchInput = styled.input`
-  width: 400px;
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  background: rgba(255, 255, 255, 0.6);
-  outline: none;
-  transition: 0.3s;
-
-  &:focus {
-    border-color: #3385ff;
-    box-shadow: 0 0 5px rgba(51, 133, 255, 0.5);
-  }
-`;
-
-const Menu = styled.nav`
+const Menu = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 40px;
+  gap: 16px;
 `;
 
 const MenuItem = styled.div`
-  margin: 0 10px;
   font-size: 0.95rem;
   color: #333;
   cursor: pointer;
@@ -91,9 +66,26 @@ const MenuItem = styled.div`
   }
 `;
 
-const Divider = styled.div`
-  width: 1px;
-  height: 20px;
-  background: #ccc;
-  margin: 0 12px;
+const LoginButton = styled.button`
+  background: transparent;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+`;
+
+const ProfileButton = styled(LoginButton)`
+  font-weight: bold;
+  color: #3385ff;
+  border-color: #3385ff;
+
+  &:hover {
+    background: rgba(51, 133, 255, 0.1);
+  }
 `;
