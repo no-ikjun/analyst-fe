@@ -1,99 +1,196 @@
-import { motion } from "framer-motion";
 import { useState } from "react";
-import { Button } from "../components/ui/button";
-import { Card, CardContent } from "../components/ui/card";
-import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
+import styled from "styled-components";
 
 export default function InvestmentProfileForm() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     riskTolerance: "",
-    interests: "",
-    knowledgeLevel: "",
+    interests: [] as string[],
     assetSize: "",
   });
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = e.target;
+    setFormData((prev) => {
+      const newInterests = checked
+        ? [...prev.interests, value]
+        : prev.interests.filter((item) => item !== value);
+      return { ...prev, interests: newInterests };
+    });
   };
 
   const handleNext = () => setStep((prev) => prev + 1);
   const handleSubmit = () => console.log(formData);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#dfefff] to-[#f8fbff]">
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="backdrop-blur-2xl bg-white/30 border border-white/20 shadow-2xl rounded-3xl p-8 max-w-md w-full space-y-6"
-      >
-        <h2 className="text-2xl font-bold text-center text-gray-800">
-          {step === 1 && "당신의 투자 성향을 알려주세요"}
-          {step === 2 && "관심 있는 투자 분야는 무엇인가요?"}
-          {step === 3 && "투자 지식 수준을 선택해주세요"}
-          {step === 4 && "현재 자산 규모를 입력해주세요"}
-        </h2>
+    <>
+      <Card>
+        <Title>
+          {step === 1 && "당신의 투자 성향을 선택해주세요"}
+          {step === 2 && "관심 있는 투자 분야를 선택해주세요"}
+          {step === 3 && "현재 자산 규모를 선택해주세요"}
+        </Title>
 
         {step === 1 && (
-          <div className="space-y-4">
-            <Textarea
-              placeholder="예: 안정형, 공격형, 중립형 등"
-              name="riskTolerance"
-              value={formData.riskTolerance}
-              onChange={handleChange}
-              className="bg-white/40 backdrop-blur rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-200"
-            />
-            <Button className="w-full">다음</Button>
-          </div>
+          <Options>
+            {["안정형", "중립형", "적극형", "공격형", "초고위험"].map(
+              (type) => (
+                <Label key={type}>
+                  <input
+                    type="radio"
+                    name="riskTolerance"
+                    value={type}
+                    checked={formData.riskTolerance === type}
+                    onChange={handleChange}
+                  />
+                  <Text>{type}</Text>
+                </Label>
+              ),
+            )}
+            <Button disabled={!formData.riskTolerance} onClick={handleNext}>
+              다음
+            </Button>
+          </Options>
         )}
 
         {step === 2 && (
-          <div className="space-y-4">
-            <Textarea
-              placeholder="예: 주식, 부동산, 코인, 스타트업 투자 등"
-              name="interests"
-              value={formData.interests}
-              onChange={handleChange}
-              className="bg-white/40 backdrop-blur rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-200"
-            />
-            <Button className="w-full" onClick={handleNext}>
+          <Options>
+            {["주식", "부동산", "암호화폐", "스타트업", "채권", "기타"].map(
+              (field) => (
+                <Label key={field}>
+                  <input
+                    type="checkbox"
+                    value={field}
+                    checked={formData.interests.includes(field)}
+                    onChange={handleCheckboxChange}
+                  />
+                  {field}
+                </Label>
+              ),
+            )}
+            <Button
+              disabled={formData.interests.length === 0}
+              onClick={handleNext}
+            >
               다음
             </Button>
-          </div>
+          </Options>
         )}
 
         {step === 3 && (
-          <div className="space-y-4">
-            <Input
-              placeholder="초급, 중급, 고급 등"
-              name="knowledgeLevel"
-              value={formData.knowledgeLevel}
-              onChange={handleChange}
-              className="bg-white/40 backdrop-blur rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-200"
-            />
-            <Button className="w-full" onClick={handleNext}>
-              다음
-            </Button>
-          </div>
-        )}
-
-        {step === 4 && (
-          <div className="space-y-4">
-            <Input
-              placeholder="예: 약 5천만원, 1억원 이상 등"
-              name="assetSize"
-              value={formData.assetSize}
-              onChange={handleChange}
-              className="bg-white/40 backdrop-blur rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-200"
-            />
-            <Button className="w-full" onClick={handleSubmit}>
+          <Options>
+            {[
+              "5천만원 이하",
+              "5천만원~1억원",
+              "1억원~5억원",
+              "5억원~10억원",
+              "10억원 이상",
+            ].map((amount) => (
+              <AssetButton
+                key={amount}
+                selected={formData.assetSize === amount}
+                onClick={() => setFormData({ ...formData, assetSize: amount })}
+              >
+                {amount}
+              </AssetButton>
+            ))}
+            <Button disabled={!formData.assetSize} onClick={handleSubmit}>
               제출하기
             </Button>
-          </div>
+          </Options>
         )}
-      </motion.div>
-    </div>
+      </Card>
+    </>
   );
 }
+
+const Card = styled.div`
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 350px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+`;
+
+const Title = styled.h2`
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+`;
+
+const Options = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+`;
+
+const Label = styled.label`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  width: 100%;
+  max-width: 220px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  input {
+    transform: scale(1.2);
+  }
+`;
+
+const Text = styled.span`
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+`;
+
+const Button = styled.button`
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #66b2ff, #3385ff);
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    background: linear-gradient(135deg, #3385ff, #0066cc);
+  }
+`;
+
+const AssetButton = styled.button<{ selected: boolean }>`
+  padding: 12px;
+  border-radius: 10px;
+  background: ${({ selected }) =>
+    selected ? "#3385ff" : "rgba(255, 255, 255, 0.4)"};
+  color: ${({ selected }) => (selected ? "white" : "#333")};
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    background: ${({ selected }) =>
+      selected ? "#0066cc" : "rgba(255, 255, 255, 0.6)"};
+  }
+`;
