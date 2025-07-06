@@ -19,8 +19,14 @@ export default function Header() {
         <MenuItem onClick={() => navigate("/chatting")}>Chatting</MenuItem>
 
         {isLoggedIn ? (
-          <ProfileButton onClick={() => navigate("/profile")}>
-            내 프로필
+          <ProfileButton
+            onClick={() => {
+              localStorage.removeItem("accessToken");
+              useAuthStore.getState().setLoggedIn(false);
+              navigate("/login");
+            }}
+          >
+            로그아웃
           </ProfileButton>
         ) : (
           <LoginButton onClick={() => navigate("/login")}>로그인</LoginButton>

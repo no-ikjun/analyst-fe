@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Masonry from "react-masonry-css";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import LoadingOverlay from "./components/LoadingOverlay";
@@ -27,6 +28,8 @@ export default function MainPage() {
   const [selectedArticle, setSelectedArticle] = useState<ArticleCard | null>(
     null,
   );
+
+  const navigate = useNavigate();
 
   const fetchRecommendedArticles = async () => {
     setLoading(true);
@@ -63,8 +66,14 @@ export default function MainPage() {
   };
 
   useEffect(() => {
+    // 로그인 상태 확인
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      navigate("/login");
+      return;
+    }
     fetchRecommendedArticles();
-  }, []);
+  }, [navigate]);
 
   return (
     <Wrapper>
