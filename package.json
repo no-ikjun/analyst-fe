@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build --mode ${VITE_MODE:-default}",
+    "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint src/"
   },
@@ -48,6 +48,5 @@
     "vite-plugin-checker": "^0.6.2",
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^4.3.1"
-  },
-  "packageManager": "yarn@3.3.1"
+  }
 }
