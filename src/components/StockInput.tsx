@@ -1,7 +1,6 @@
-import "../styles/StockInput.css";
-
 import axios from "axios";
 import { useState } from "react";
+import styled from "styled-components";
 
 import ForeignStockInfo from "./ForeignStockInfo";
 import LoadingOverlay from "./LoadingOverlay";
@@ -63,25 +62,28 @@ const StockInput = () => {
   };
 
   return (
-    <div className="stock-input-container">
+    <Wrapper>
       <LoadingOverlay loading={loading} />
-      <a
+
+      {/* <Link
         href="http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201020101"
         target="_blank"
         rel="noreferrer"
       >
         종목 티커 확인하기
-      </a>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="stockCode">관심 주식 종목 티커:</label>
-        <input
+      </Link> */}
+
+      <Form onSubmit={handleSubmit}>
+        <Label htmlFor="stockCode">관심 주식 종목 티커:</Label>
+        <Input
           type="text"
           id="stockCode"
           value={stockCode}
           onChange={handleInputChange}
           required
         />
-        <div className="checkbox-container">
+
+        <CheckboxContainer>
           <label htmlFor="international">
             해외 주식 검색 (
             <a
@@ -93,16 +95,19 @@ const StockInput = () => {
             </a>
             )
           </label>
-          <input
+          <Checkbox
             type="checkbox"
             id="international"
             checked={isInternational}
             onChange={handleCheckboxChange}
           />
-        </div>
-        <button type="submit">검색하기</button>
-      </form>
-      {error && <p className="error">{error}</p>}
+        </CheckboxContainer>
+
+        <SearchButton type="submit">검색하기</SearchButton>
+      </Form>
+
+      {error && <ErrorText>{error}</ErrorText>}
+
       {!error &&
         stockInfo &&
         (stockInfo.admn_item_yn ? (
@@ -110,8 +115,93 @@ const StockInput = () => {
         ) : (
           <ForeignStockInfo stockInfo={stockInfo} code={stockCode} />
         ))}
-    </div>
+    </Wrapper>
   );
 };
 
 export default StockInput;
+
+const Wrapper = styled.div`
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+`;
+
+// const Link = styled.a`
+//   color: #3385ff;
+//   text-decoration: none;
+//   font-size: 0.9rem;
+//   text-align: center;
+
+//   &:hover {
+//     text-decoration: underline;
+//   }
+// `;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const Label = styled.label`
+  font-size: 0.9rem;
+  color: #222;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+
+  &:focus {
+    border-color: #3385ff;
+  }
+`;
+
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #333;
+
+  a {
+    color: #3385ff;
+    text-decoration: none;
+    margin-left: 4px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+const Checkbox = styled.input`
+  transform: scale(1.2);
+`;
+
+const SearchButton = styled.button`
+  background: #3385ff;
+  color: white;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #1c6fe6;
+  }
+`;
+
+const ErrorText = styled.p`
+  color: red;
+  font-size: 0.9rem;
+  text-align: center;
+`;

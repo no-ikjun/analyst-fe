@@ -4,12 +4,13 @@ import { Route, Routes } from "react-router-dom";
 
 import LoginPage from "./auth/LoginPage";
 import SignupPage from "./auth/SignupPage";
+import ChatbotPage from "./chat/ChatbotPage";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import GlobalPersonalAssistant from "./components/PersonalAssistance";
-// import HomePage from "./HomePage";
 import Home from "./MainPage";
 import UserProfileForm from "./profile/UserProfileForm";
+import AnalystPage from "./stock/AnalystPage";
 import ForeignStockPage from "./stock/ForeignStockPage";
 import MyStockPage from "./stock/MyStockPage";
 import InvestmentPreferences from "./stock/PrefPage";
@@ -21,6 +22,7 @@ function App() {
       <Header />
       <GlobalPersonalAssistant />
       <Routes>
+        <Route path="/analyst" element={<AnalystPage />} />
         <Route path="/profile" element={<UserProfileForm />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
@@ -28,6 +30,7 @@ function App() {
         <Route path="/stock/foreign" element={<ForeignStockPage />} />
         <Route path="/pref" element={<InvestmentPreferences />} />
         <Route path="/slack" element={<SlackWebhookPage />} />
+        <Route path="/chatting" element={<ChatbotPage />} />
         <Route path="/" element={<Home />} />
       </Routes>
       <Footer />

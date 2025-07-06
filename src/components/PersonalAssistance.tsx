@@ -1,12 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
+interface MessageWrapperProps {
+  $isUser?: boolean;
+}
+
 export default function GlobalPersonalAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [conversation, setConversation] = useState<string[]>([]);
   const [isComposing, setIsComposing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
+
+  const sessionId = useRef<string>(
+    localStorage.getItem("chatSessionId") || crypto.randomUUID(),
+  );
+
+  useEffect(() => {
+    localStorage.setItem("chatSessionId", sessionId.current);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -25,18 +38,71 @@ export default function GlobalPersonalAssistant() {
     }
   }, [conversation]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
-    setConversation((prev) => [
-      ...prev,
-      `🧑‍💻 ${input}`,
-      `🤖 AI 답변: ${input}에 대한 분석입니다.`,
-    ]);
+
+    const userMessage = input.trim();
+    setConversation((prev) => [...prev, `🧑‍💻 ${userMessage}`]);
     setInput("");
+    setIsLoading(true);
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BASE_AI_URL}/chatbot/message`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: sessionId.current,
+            message: userMessage,
+          }),
+        },
+      );
+
+      const data = await res.json();
+      if (data.response) {
+        setConversation((prev) => [...prev, `🤖 AI 답변: ${data.response}`]);
+      } else {
+        setConversation((prev) => [
+          ...prev,
+          "오류: 답변을 생성할 수 없습니다.",
+        ]);
+      }
+    } catch (err) {
+      console.error("챗봇 오류:", err);
+      setConversation((prev) => [...prev, "오류: 서버와 통신에 실패했습니다."]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleReset = () => {
+  const handleReset = async () => {
     setConversation([]);
+    setInput("");
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BASE_AI_URL}/chatbot/reset`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ session_id: sessionId.current }),
+        },
+      );
+
+      if (!res.ok) {
+        throw new Error("세션 초기화 실패");
+      }
+
+      const newSessionId = crypto.randomUUID();
+      sessionId.current = newSessionId;
+      localStorage.setItem("chatSessionId", newSessionId);
+
+      console.log("새 세션 생성:", newSessionId);
+    } catch (err) {
+      console.error("세션 초기화 오류:", err);
+      setConversation((prev) => [...prev, "오류: 세션 초기화에 실패했습니다."]);
+    }
   };
 
   if (!isOpen) return null;
@@ -71,10 +137,16 @@ export default function GlobalPersonalAssistant() {
           </Notice>
         )}
         {conversation.map((msg, idx) => (
-          <MessageWrapper key={idx} isUser={idx % 2 === 0}>
+          <MessageWrapper key={idx} $isUser={idx % 2 === 0}>
             <Message isUser={idx % 2 === 0}>{msg}</Message>
           </MessageWrapper>
         ))}
+
+        {isLoading && (
+          <MessageWrapper $isUser={false}>
+            <LoadingMessage>🤖 답변을 생성하는 중...</LoadingMessage>
+          </MessageWrapper>
+        )}
       </ChatPanel>
     </Container>
   );
@@ -162,10 +234,11 @@ const ChatPanel = styled.div`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
 `;
-const MessageWrapper = styled.div<{ isUser?: boolean }>`
+const MessageWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "$isUser",
+})<MessageWrapperProps>`
   display: flex;
-  justify-content: ${(props) => (props.isUser ? "flex-end" : "flex-start")};
-  margin: 4px 0;
+  justify-content: ${(props) => (props.$isUser ? "flex-end" : "flex-start")};
 `;
 
 const Message = styled.div<{ isUser?: boolean }>`
@@ -173,6 +246,7 @@ const Message = styled.div<{ isUser?: boolean }>`
     props.isUser ? "rgba(200, 230, 255, 0.3)" : "rgba(255,255,255,0.8)"};
   color: #333;
   padding: 10px 14px;
+  margin-bottom: 12px;
   border-radius: 16px;
   max-width: 70%;
   word-break: break-word;
@@ -189,4 +263,17 @@ const Notice = styled.div`
   padding: 8px;
   border-radius: 8px;
   text-align: center;
+`;
+
+const LoadingMessage = styled.div`
+  background: rgba(255, 255, 255, 0.8);
+  color: #555;
+  padding: 10px 14px;
+  border-radius: 16px;
+  max-width: 70%;
+  word-break: break-word;
+  white-space: pre-wrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-style: italic;
+  backdrop-filter: blur(10px);
 `;

@@ -19,8 +19,14 @@ export default function Header() {
         <MenuItem onClick={() => navigate("/chatting")}>Chatting</MenuItem>
 
         {isLoggedIn ? (
-          <ProfileButton onClick={() => navigate("/profile")}>
-            내 프로필
+          <ProfileButton
+            onClick={() => {
+              localStorage.removeItem("accessToken");
+              useAuthStore.getState().setLoggedIn(false);
+              navigate("/login");
+            }}
+          >
+            로그아웃
           </ProfileButton>
         ) : (
           <LoginButton onClick={() => navigate("/login")}>로그인</LoginButton>
@@ -41,6 +47,7 @@ const Container = styled.header`
   align-items: center;
   padding: 6px 24px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap;
 `;
 
 const Logo = styled.h1`
@@ -55,6 +62,10 @@ const SearchWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 0 24px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const SearchInput = styled.input`
@@ -69,6 +80,10 @@ const SearchInput = styled.input`
   &:focus {
     border-color: #3385ff;
     box-shadow: 0 0 5px rgba(51, 133, 255, 0.5);
+  }
+
+  @media (max-width: 768px) {
+    width: 80%;
   }
 `;
 

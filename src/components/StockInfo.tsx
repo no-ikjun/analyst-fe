@@ -1,7 +1,6 @@
-import "../styles/StockInfo.css";
-
 import axios from "axios";
 import { useState } from "react";
+import styled from "styled-components";
 
 import LoadingOverlay from "./LoadingOverlay";
 
@@ -31,22 +30,82 @@ const StockInfo = ({ stockInfo, code }: any) => {
   };
 
   return (
-    <div className="stock-info-container">
+    <Wrapper>
       <LoadingOverlay loading={loading} />
-      <h3>주식 정보</h3>
-      <p>{stockInfo.std_pdno}</p>
-      <p>{Number(stockInfo.bfdy_clpr).toLocaleString()} (전일종가)</p>
-      <p>
+
+      <Title>주식 정보</Title>
+      <InfoItem>종목 코드: {stockInfo.std_pdno}</InfoItem>
+      <InfoItem>
+        전일 종가: {Number(stockInfo.bfdy_clpr).toLocaleString()} 원
+      </InfoItem>
+      <InfoItem>
+        시가총액:{" "}
         {(
           Number(stockInfo.bfdy_clpr) * Number(stockInfo.lstg_stqt)
-        ).toLocaleString()}
-        원 (시총)
-      </p>
-      <p>{stockInfo.prdt_abrv_name}</p>
-      {error && <p className="error">{error}</p>}
-      <button onClick={handleAddToWatchlist}>관심 종목에 추가</button>
-    </div>
+        ).toLocaleString()}{" "}
+        원
+      </InfoItem>
+      <InfoItem>종목 이름: {stockInfo.prdt_abrv_name}</InfoItem>
+
+      {error && <ErrorText>{error}</ErrorText>}
+
+      <ActionButton onClick={handleAddToWatchlist}>
+        관심 종목에 추가
+      </ActionButton>
+    </Wrapper>
   );
 };
 
 export default StockInfo;
+
+const Wrapper = styled.div`
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 16px;
+  padding: 20px;
+  width: calc(100%-40px);
+  max-width: 400px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+`;
+
+const Title = styled.h3`
+  font-size: 1.4rem;
+  color: #222;
+  margin-bottom: 12px;
+  text-align: center;
+`;
+
+const InfoItem = styled.p`
+  margin: 0;
+  font-size: 0.95rem;
+  color: #333;
+`;
+
+const ErrorText = styled.p`
+  color: red;
+  font-size: 0.9rem;
+  text-align: center;
+`;
+
+const ActionButton = styled.button`
+  background: #3385ff;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 8px;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+
+  &:hover {
+    background: #1c6fe6;
+  }
+`;
