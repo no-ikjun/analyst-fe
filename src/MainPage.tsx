@@ -1,110 +1,19 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import Masonry from "react-masonry-css";
 import styled from "styled-components";
 
-const contentList = [
-  {
-    type: "뉴스",
-    title: "윤석열, 오늘 특검 2차 출석",
-    summary:
-      "윤석열 전 대통령이 오늘 2차 특검에 출석해 주요 혐의에 대해 조사를 받았다.",
-    image:
-      "https://img.khan.co.kr/news/r/700xX/2025/07/05/news-p.v1.20250705.b3dcef377e784132b3c541b6f00ec96b_P1.webp",
-    relevance: 85,
-  },
-  {
-    type: "뉴스",
-    title: "SK 해킹 피해 전액 환급",
-    summary: "SK텔레콤 해킹 피해로 인한 고객 위약금 전액 환급 조치가 발표됐다.",
-    relevance: 72,
-  },
-  {
-    type: "지식",
-    title: "ETF",
-    description: "여러 종목을 묶어 거래하는 상장지수펀드",
-    relevance: 95,
-  },
-  {
-    type: "지식",
-    title: "PER",
-    description: "주가수익비율, 기업 가치 평가 지표",
-    relevance: 88,
-  },
-  {
-    type: "상품",
-    title: "미래에셋 미국 배당주 펀드",
-    description: "안정적 배당 수익을 추구하는 글로벌 펀드",
-    relevance: 90,
-  },
-  {
-    type: "상품",
-    title: "미래에셋 AI 로보어드바이저",
-    description: "AI가 관리하는 초개인화 투자 포트폴리오",
-    relevance: 93,
-  },
-  {
-    type: "상품",
-    title: "미래에셋 미국 배당주 펀드",
-    description: "안정적 배당 수익을 추구하는 글로벌 펀드",
-    relevance: 90,
-  },
-  {
-    type: "상품",
-    title: "미래에셋 AI 로보어드바이저",
-    description: "AI가 관리하는 초개인화 투자 포트폴리오",
-    relevance: 93,
-  },
-  {
-    type: "뉴스",
-    title: "윤석열, 오늘 특검 2차 출석",
-    summary:
-      "윤석열 전 대통령이 오늘 2차 특검에 출석해 주요 혐의에 대해 조사를 받았다.",
-    image:
-      "https://img.khan.co.kr/news/r/700xX/2025/07/05/news-p.v1.20250705.b3dcef377e784132b3c541b6f00ec96b_P1.webp",
-    relevance: 85,
-  },
-  {
-    type: "뉴스",
-    title: "SK 해킹 피해 전액 환급",
-    summary: "SK텔레콤 해킹 피해로 인한 고객 위약금 전액 환급 조치가 발표됐다.",
-    relevance: 72,
-  },
-  {
-    type: "지식",
-    title: "ETF",
-    description: "여러 종목을 묶어 거래하는 상장지수펀드",
-    relevance: 95,
-  },
-  {
-    type: "지식",
-    title: "ETF",
-    description: "여러 종목을 묶어 거래하는 상장지수펀드",
-    relevance: 95,
-  },
-  {
-    type: "지식",
-    title: "ETF",
-    description: "여러 종목을 묶어 거래하는 상장지수펀드",
-    relevance: 95,
-  },
-  {
-    type: "지식",
-    title: "ETF",
-    description: "여러 종목을 묶어 거래하는 상장지수펀드",
-    relevance: 95,
-  },
-  {
-    type: "상품",
-    title: "미래에셋 AI 로보어드바이저",
-    description: "AI가 관리하는 초개인화 투자 포트폴리오",
-    relevance: 93,
-  },
-  {
-    type: "상품",
-    title: "미래에셋 AI 로보어드바이저",
-    description: "AI가 관리하는 초개인화 투자 포트폴리오",
-    relevance: 93,
-  },
-];
+import LoadingOverlay from "./components/LoadingOverlay";
+
+interface ArticleCard {
+  type: string;
+  title: string;
+  description?: string;
+  relevance: number;
+  article: string;
+  difficulty: string;
+  source_url: string[];
+}
 
 const breakpointColumnsObj = {
   default: 3,
@@ -113,29 +22,102 @@ const breakpointColumnsObj = {
 };
 
 export default function MainPage() {
+  const [contentList, setContentList] = useState<ArticleCard[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<ArticleCard | null>(
+    null,
+  );
+
+  const fetchRecommendedArticles = async () => {
+    setLoading(true);
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const res = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/articles/recommend`,
+        { params: { access_token: accessToken } },
+      );
+
+      const results = res.data.results || res.data;
+
+      if (!Array.isArray(results)) {
+        console.error("API 응답이 배열 형태가 아님:", results);
+        setLoading(false);
+        return;
+      }
+
+      const transformed: ArticleCard[] = results.map((item: any) => ({
+        type: "뉴스",
+        title: item.topic,
+        description: item.article.slice(0, 150) + "...",
+        relevance: item.relevance || 0,
+        article: item.article,
+        difficulty: item.difficulty || "intermediate",
+        source_url: Array.isArray(item.sources) ? item.sources : [],
+      }));
+
+      setContentList(transformed);
+    } catch (err) {
+      console.error("추천 아티클 로딩 실패", err);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchRecommendedArticles();
+  }, []);
+
   return (
     <Wrapper>
+      <LoadingOverlay loading={loading} />
+
       <StyledMasonry
         breakpointCols={breakpointColumnsObj}
         className="masonry-grid"
         columnClassName="masonry-grid_column"
       >
         {contentList.map((item, idx) => (
-          <Card key={idx}>
+          <Card key={idx} onClick={() => setSelectedArticle(item)}>
             <CardTop>
               <TypeIcon>{item.type}</TypeIcon>
               <Relevance>{item.relevance}% 일치</Relevance>
             </CardTop>
-
-            {item.image && <CardImage src={item.image} alt={item.title} />}
-
             <CardTitle>{item.title}</CardTitle>
-
-            {item.summary && <Summary>{item.summary}</Summary>}
             {item.description && <Description>{item.description}</Description>}
           </Card>
         ))}
       </StyledMasonry>
+
+      {selectedArticle && (
+        <ModalOverlay onClick={() => setSelectedArticle(null)}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalHeader>
+              <ModalTitle>{selectedArticle.title}</ModalTitle>
+              <CloseButton onClick={() => setSelectedArticle(null)}>
+                ×
+              </CloseButton>
+            </ModalHeader>
+
+            <Difficulty>난이도: {selectedArticle.difficulty}</Difficulty>
+
+            <ModalBody>{selectedArticle.article}</ModalBody>
+
+            <SourceSection>
+              <SourceLabel>출처:</SourceLabel>
+              {selectedArticle.source_url.map((url, idx) => (
+                <SourceIcon
+                  key={idx}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`출처 ${idx + 1}`}
+                >
+                  🔗
+                </SourceIcon>
+              ))}
+            </SourceSection>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </Wrapper>
   );
 }
@@ -161,15 +143,24 @@ const StyledMasonry = styled(Masonry)`
 `;
 
 const Card = styled.div`
-  backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(25px);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 16px;
   padding: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 8px;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.3);
+  }
 `;
 
 const CardTop = styled.div`
@@ -179,9 +170,9 @@ const CardTop = styled.div`
 `;
 
 const TypeIcon = styled.div`
-  background: #3385ff;
+  background: #3586ff7d;
   color: white;
-  padding: 4px 8px;
+  padding: 2px 10px;
   border-radius: 8px;
   font-size: 0.8rem;
 `;
@@ -191,13 +182,6 @@ const Relevance = styled.div`
   color: #555;
 `;
 
-const CardImage = styled.img`
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 10px;
-`;
-
 const CardTitle = styled.h3`
   margin: 0;
   font-size: 1rem;
@@ -205,14 +189,105 @@ const CardTitle = styled.h3`
   color: #222;
 `;
 
-const Summary = styled.p`
-  margin: 0;
-  font-size: 0.9rem;
-  color: #444;
-`;
-
 const Description = styled.p`
   font-size: 0.9rem;
   color: #444;
   margin: 0;
+`;
+
+/** 모달 스타일 */
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+`;
+
+const ModalContent = styled.div`
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  padding: 24px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+`;
+
+const ModalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+`;
+
+const ModalTitle = styled.h2`
+  margin: 0;
+  font-size: 1.4rem;
+  color: #222;
+`;
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #555;
+`;
+
+const Difficulty = styled.div`
+  font-size: 0.9rem;
+  color: #3385ff;
+  margin-bottom: 12px;
+`;
+
+const ModalBody = styled.div`
+  font-size: 1rem;
+  color: #333;
+  white-space: pre-wrap;
+  line-height: 1.5;
+`;
+
+const SourceSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+`;
+
+const SourceLabel = styled.div`
+  font-size: 0.9rem;
+  color: #222;
+  font-weight: bold;
+`;
+
+const SourceIcon = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(51, 133, 255, 0.15);
+  color: #3385ff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+
+  &:hover {
+    background: rgba(51, 133, 255, 0.25);
+    transform: scale(1.1);
+  }
 `;
