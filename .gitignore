@@ -24,14 +24,8 @@ build
 *.sln
 *.sw?
 
-# yarn berry
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+# lock
+package-lock.json
 
 .env.development
 .env.production
