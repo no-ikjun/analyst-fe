@@ -77,6 +77,12 @@ export default function MainPage() {
 
   return (
     <Wrapper>
+      <TopBar>
+        <TopText>더 정확한 추천을 위해 나의 투자 현황을 검사해보세요!</TopText>
+        <ProfileButton onClick={() => navigate("/profile")}>
+          투자 성향 분석하기 →
+        </ProfileButton>
+      </TopBar>
       <LoadingOverlay loading={loading} />
 
       <StyledMasonry
@@ -135,6 +141,45 @@ const Wrapper = styled.div`
   background: linear-gradient(135deg, #e6f0ff, #f2faff);
   min-height: 100vh;
   padding: 20px 40px;
+`;
+
+const TopBar = styled.div`
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 12px;
+  }
+`;
+
+const TopText = styled.div`
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+`;
+
+const ProfileButton = styled.button`
+  background: linear-gradient(135deg, #66b2ff, #3385ff);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: 0.3s;
+
+  &:hover {
+    background: linear-gradient(135deg, #3385ff, #0066cc);
+  }
 `;
 
 const StyledMasonry = styled(Masonry)`
