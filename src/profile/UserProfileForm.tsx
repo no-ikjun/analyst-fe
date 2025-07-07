@@ -1,13 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-export default function InvestmentProfileForm() {
+export default function ProfilePage() {
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
-    riskTolerance: "",
+    risk_profile: "",
     interests: [] as string[],
     assetSize: "",
+    knowledge_level: "",
   });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+        const res = await fetch(
+          `${import.meta.env.VITE_BASE_AI_URL}/profiles?access_token=${accessToken}`,
+        );
+        const data = await res.json();
+        setFormData({
+          risk_profile: data.risk_profile || "",
+          interests: data.interests?.split(",") || [],
+          assetSize: data.assetSize || "",
+          knowledge_level: data.knowledge_level || "",
+        });
+      } catch (err) {
+        console.error("프로필 조회 실패", err);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,15 +48,41 @@ export default function InvestmentProfileForm() {
   };
 
   const handleNext = () => setStep((prev) => prev + 1);
-  const handleSubmit = () => console.log(formData);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BASE_AI_URL}/profiles?access_token=${localStorage.getItem("accessToken")}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...formData,
+            interests: formData.interests.join(","),
+          }),
+        },
+      );
+      if (res.ok) {
+        alert("프로필이 저장되었습니다.");
+      } else {
+        alert("저장 실패");
+      }
+    } catch (err) {
+      console.error("저장 오류", err);
+      alert("저장 중 오류 발생");
+    }
+    setLoading(false);
+  };
 
   return (
-    <>
+    <Wrapper>
       <Card>
         <Title>
-          {step === 1 && "당신의 투자 성향을 선택해주세요"}
-          {step === 2 && "관심 있는 투자 분야를 선택해주세요"}
-          {step === 3 && "현재 자산 규모를 선택해주세요"}
+          {step === 1 && "투자 성향을 선택하세요"}
+          {step === 2 && "관심 분야를 선택하세요"}
+          {step === 3 && "자산 규모를 선택하세요"}
+          {step === 4 && "투자 배경지식 테스트"}
         </Title>
 
         {step === 1 && (
@@ -42,16 +92,16 @@ export default function InvestmentProfileForm() {
                 <Label key={type}>
                   <input
                     type="radio"
-                    name="riskTolerance"
+                    name="risk_profile"
                     value={type}
-                    checked={formData.riskTolerance === type}
+                    checked={formData.risk_profile === type}
                     onChange={handleChange}
                   />
                   <Text>{type}</Text>
                 </Label>
               ),
             )}
-            <Button disabled={!formData.riskTolerance} onClick={handleNext}>
+            <Button disabled={!formData.risk_profile} onClick={handleNext}>
               다음
             </Button>
           </Options>
@@ -98,56 +148,94 @@ export default function InvestmentProfileForm() {
                 {amount}
               </AssetButton>
             ))}
-            <Button disabled={!formData.assetSize} onClick={handleSubmit}>
-              제출하기
+            <Button disabled={!formData.assetSize} onClick={handleNext}>
+              다음
+            </Button>
+          </Options>
+        )}
+
+        {step === 4 && (
+          <Options>
+            <p style={{ textAlign: "center" }}>
+              Q. ETF(상장지수펀드)에 대해 얼마나 알고 있나요?
+            </p>
+            {["beginner", "intermediate", "advanced"].map((level) => (
+              <AssetButton
+                key={level}
+                selected={formData.knowledge_level === level}
+                onClick={() =>
+                  setFormData({ ...formData, knowledge_level: level })
+                }
+              >
+                {level === "beginner" && "초보자"}
+                {level === "intermediate" && "중급자"}
+                {level === "advanced" && "전문가"}
+              </AssetButton>
+            ))}
+            <Button
+              disabled={!formData.knowledge_level || loading}
+              onClick={handleSubmit}
+            >
+              {loading ? "저장 중..." : "제출하기"}
             </Button>
           </Options>
         )}
       </Card>
-    </>
+    </Wrapper>
   );
 }
 
-const Card = styled.div`
-  backdrop-filter: blur(20px);
+export const Wrapper = styled.div`
+  background: linear-gradient(135deg, #e6f0ff, #f2faff);
+  min-height: calc(100vh - 200px);
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Card = styled.div`
+  backdrop-filter: blur(25px);
   background: rgba(255, 255, 255, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 24px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  padding: 40px;
-  width: 350px;
-  min-height: 400px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
 `;
 
-const Title = styled.h2`
-  font-size: 1.5rem;
+export const Title = styled.h2`
+  font-size: 1.8rem;
   font-weight: bold;
-  color: #333;
+  color: #222;
+  text-align: center;
 `;
 
-const Options = styled.div`
+export const Options = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
   align-items: center;
+  width: 100%;
 `;
 
-const Label = styled.label`
+export const Label = styled.label`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 12px;
   width: 100%;
-  max-width: 220px;
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
+  max-width: 300px;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 14px;
   cursor: pointer;
   transition: 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
   &:hover {
     background: rgba(255, 255, 255, 0.5);
@@ -158,36 +246,46 @@ const Label = styled.label`
   }
 `;
 
-const Text = styled.span`
+export const Text = styled.span`
   font-size: 1rem;
   font-weight: 500;
   color: #333;
 `;
 
-const Button = styled.button`
-  padding: 12px;
-  border-radius: 10px;
+export const Button = styled.button`
+  padding: 14px 28px;
+  border-radius: 14px;
   background: linear-gradient(135deg, #66b2ff, #3385ff);
   color: white;
   font-weight: bold;
   border: none;
   cursor: pointer;
+  font-size: 1rem;
   transition: 0.3s;
+  min-width: 160px;
 
   &:hover {
     background: linear-gradient(135deg, #3385ff, #0066cc);
   }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `;
 
-const AssetButton = styled.button<{ selected: boolean }>`
-  padding: 12px;
-  border-radius: 10px;
+export const AssetButton = styled.button<{ selected: boolean }>`
+  padding: 14px 28px;
+  border-radius: 14px;
   background: ${({ selected }) =>
     selected ? "#3385ff" : "rgba(255, 255, 255, 0.4)"};
   color: ${({ selected }) => (selected ? "white" : "#333")};
-  border: 1px solid #ccc;
+  border: 1px solid ${({ selected }) => (selected ? "#3385ff" : "#ccc")};
   cursor: pointer;
   transition: 0.3s;
+  min-width: 260px;
+  font-weight: ${({ selected }) => (selected ? "bold" : "normal")};
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
   &:hover {
     background: ${({ selected }) =>
