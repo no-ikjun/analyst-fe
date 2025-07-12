@@ -23,14 +23,23 @@ export default function GlobalPersonalAssistant() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.metaKey && e.shiftKey && e.key.toLowerCase() === "p") {
+      const isMac = navigator.platform.toUpperCase().includes("MAC");
+  
+      const isCorrectKeyCombo =
+        e.shiftKey &&
+        e.code === "Space" &&
+        ((isMac && e.metaKey) || (!isMac && e.ctrlKey));
+  
+      if (isCorrectKeyCombo) {
         e.preventDefault();
         setIsOpen((prev) => !prev);
       }
     };
+  
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
 
   useEffect(() => {
     if (chatRef.current) {
