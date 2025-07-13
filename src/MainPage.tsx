@@ -262,6 +262,7 @@ const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 999;
+  padding: 20px;
 `;
 
 const ModalContent = styled.div`
