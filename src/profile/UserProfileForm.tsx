@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 export default function ProfilePage() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     risk_profile: "",
@@ -64,7 +66,7 @@ export default function ProfilePage() {
         },
       );
       if (res.ok) {
-        alert("프로필이 저장되었습니다.");
+        navigate("/");
       } else {
         alert("저장 실패");
       }
