@@ -161,7 +161,7 @@ export default function ProfilePage() {
             <p style={{ textAlign: "center" }}>
               Q. 주가수익비율(PER)이 낮은 경우가 의미하는 바를 가장 정확하게 설명한 것은?
             </p>
-            {["beginner", "intermediate", "advanced"].map((level) => (
+            {["advanced", "beginner", "intermediate"].map((level) => (
               <AssetButton
                 key={level}
                 selected={formData.knowledge_level === level}
