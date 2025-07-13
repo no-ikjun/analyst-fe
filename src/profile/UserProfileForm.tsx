@@ -17,12 +17,12 @@ export default function ProfilePage() {
       try {
         const accessToken = localStorage.getItem("accessToken");
         const res = await fetch(
-          `${import.meta.env.VITE_BASE_AI_URL}/profiles?access_token=${accessToken}`,
+          `${import.meta.env.VITE_BASE_URL}/profiles?access_token=${accessToken}`,
         );
         const data = await res.json();
         setFormData({
           risk_profile: data.risk_profile || "",
-          interests: data.interests?.split(",") || [],
+          interests: data.interests?.toString() || "",
           assetSize: data.assetSize || "",
           knowledge_level: data.knowledge_level || "",
         });
@@ -157,7 +157,7 @@ export default function ProfilePage() {
         {step === 4 && (
           <Options>
             <p style={{ textAlign: "center" }}>
-              Q. ETF(상장지수펀드)에 대해 얼마나 알고 있나요?
+              Q. 주가수익비율(PER)이 낮은 경우가 의미하는 바를 가장 정확하게 설명한 것은?
             </p>
             {["beginner", "intermediate", "advanced"].map((level) => (
               <AssetButton
@@ -167,9 +167,9 @@ export default function ProfilePage() {
                   setFormData({ ...formData, knowledge_level: level })
                 }
               >
-                {level === "beginner" && "초보자"}
-                {level === "intermediate" && "중급자"}
-                {level === "advanced" && "전문가"}
+                {level === "advanced" && "기업의 수익성에 비해 주가가 저평가되어 있을 가능성이 높다."}
+                {level === "beginner" && "기업의 재무 구조가 불안정하여 투자 위험이 높다."}
+                {level === "intermediate" && "기업이 높은 성장 잠재력을 보유하고 있어 미래 수익이 크게 증가할 것으로 예상된다."}
               </AssetButton>
             ))}
             <Button
