@@ -22,7 +22,7 @@ export default function ProfilePage() {
         const data = await res.json();
         setFormData({
           risk_profile: data.risk_profile || "",
-          interests: data.interests?.toString() || "",
+          interests: data.interests?.split(",") || [],
           assetSize: data.assetSize || "",
           knowledge_level: data.knowledge_level || "",
         });
@@ -53,7 +53,7 @@ export default function ProfilePage() {
     setLoading(true);
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_BASE_AI_URL}/profiles?access_token=${localStorage.getItem("accessToken")}`,
+        `${import.meta.env.VITE_BASE_URL}/profiles?access_token=${localStorage.getItem("accessToken")}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
